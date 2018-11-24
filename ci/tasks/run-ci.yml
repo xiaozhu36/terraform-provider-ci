@@ -1,0 +1,25 @@
+---
+platform: linux
+
+#image_resource:
+#  type: docker-image
+#  source: {repository: boshcpi/aws-cpi-release}
+
+inputs:
+  - name: terraform-provider-alicloud-acceptance-tests
+
+#outputs:
+#  - name: environment
+
+run:
+  path: bash
+  args:
+  - -exc
+  - |
+    chmod +x terraform-provider-ci/ci/tasks/run-ci.sh
+    terraform-provider-ci/ci/tasks/run-ci.sh
+params:
+  ALICLOUD_ACCESS_KEY: ""
+  ALICLOUD_SECRET_KEY: ""
+  ALICLOUD_REGION: ""
+  TEST_CASE_CODE: ""

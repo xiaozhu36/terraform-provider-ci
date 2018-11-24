@@ -1,0 +1,76 @@
+resources:
+- name: terraform-provider-alicloud
+  type: git
+  source:
+    uri: https://github.com/xiaozhu36/terraform-provider-ci.git
+
+#shared:
+#  - &run-test-case
+#    task: test
+#    file: terraform-provider-src/ci/tasks/run-ci.yml
+#    params:
+#      ALICLOUD_ACCESS_KEY: {{alicloud_access_key}}
+#      ALICLOUD_SECRET_KEY: {{alicloud_secret_key}}
+#      ALICLOUD_REGION: {{alicloud_region}}
+
+jobs:
+- name: Zones
+  plan:
+  - get: terraform-provider-ci
+    resource: terraform-provider-alicloud
+#    trigger: true
+  - task: test
+    file: terraform-provider-ci/ci/tasks/run-ci.yml
+    params:
+      ALICLOUD_ACCESS_KEY: {{alicloud_access_key}}
+      ALICLOUD_SECRET_KEY: {{alicloud_secret_key}}
+      ALICLOUD_REGION: {{alicloud_region}}
+      TEST_CASE_CODE: "ZonesDataSource_basic"
+
+#- name: Images
+#  plan:
+#  - get: terraform-provider-alicloud
+#    resource: terraform-provider-alicloud
+#    trigger: true
+#  - task: test
+#    file: terraform-provider-alicloud/ci/tasks/run-ci.yml
+#    params:
+#      ALICLOUD_ACCESS_KEY: {{alicloud_access_key}}
+#      ALICLOUD_SECRET_KEY: {{alicloud_secret_key}}
+#      ALICLOUD_REGION: {{alicloud_region}}
+#      TEST_CASE_CODE: "ImagesDataSource_images"
+#
+#- name: Images2
+#  plan:
+#  - aggregate:
+#    - get: terraform-provider-alicloud
+#      resource: terraform-provider-alicloud
+#      trigger: true
+#  - task: test
+#    file: terraform-provider-alicloud/ci/tasks/run-ci.yml
+#    params:
+#      ALICLOUD_ACCESS_KEY: {{alicloud_access_key}}
+#      ALICLOUD_SECRET_KEY: {{alicloud_secret_key}}
+#      ALICLOUD_REGION: {{alicloud_region}}
+#      TEST_CASE_CODE: "ImagesDataSource_images"
+#
+#- name: Images3
+#  plan:
+#  - aggregate:
+#    - get: terraform-provider-alicloud
+#      resource: terraform-provider-alicloud
+#      trigger: true
+#  - task: test
+#    file: terraform-provider-alicloud/ci/tasks/run-ci.yml
+#    params:
+#      ALICLOUD_ACCESS_KEY: {{alicloud_access_key}}
+#      ALICLOUD_SECRET_KEY: {{alicloud_secret_key}}
+#      ALICLOUD_REGION: {{alicloud_region}}
+#      TEST_CASE_CODE: "ImagesDataSource_images"
+
+#- name: unit
+#  plan:
+#  - get: booklit
+#    trigger: true
+#  - task: test
+#    file: booklit/ci/test.yml
