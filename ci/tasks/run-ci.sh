@@ -25,7 +25,10 @@ cd terraform-provider-alicloud
 
 echo -e "******** run testcase start ********\n"
 
-echo -e $CURRENT_PATH
+echo -e $(pwd)
+
+go test
+
 TF_ACC=1 go test ./alicloud -v -run=TestAccAlicloudZonesDataSource_basic -timeout=120m
 
 echo -e $TEST_CASE_CODE
