@@ -6,7 +6,7 @@ platform: linux
 #  source: {repository: boshcpi/aws-cpi-release}
 
 inputs:
-  - name: terraform-provider-alicloud-acceptance-tests
+  - name: terraform-provider-ci
 
 #outputs:
 #  - name: environment
