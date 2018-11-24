@@ -1,9 +1,12 @@
 ---
 platform: linux
 
-#image_resource:
-#  type: docker-image
-#  source: {repository: boshcpi/aws-cpi-release}
+image_resource:
+  type: registry-image
+  source: {repository: golang}
+
+caches:
+- path: gopath/
 
 inputs:
   - name: terraform-provider-ci
