@@ -12,6 +12,11 @@ export ALICLOUD_SECRET_KEY=${ALICLOUD_SECRET_KEY}
 export ALICLOUD_REGION=${ALICLOUD_REGION}
 
 CURRENT_PATH=$(pwd)
+git clone https://github.com/terraform-providers/terraform-provider-alicloud.git
+
+ls -l $CURRENT_PATH
+
+cd $CURRENT_PATH/terraform-provider-alicloud
 
 echo -e "******** run testcase start ********\n"
 
