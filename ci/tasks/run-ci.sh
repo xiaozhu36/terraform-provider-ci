@@ -34,6 +34,7 @@ if [[ ${SWEEPER_CODE} != "" ]]; then
 echo -e "******** run sweeper test ${SWEEPER_CODE} start ********\n"
 TF_ACC=1 go test ./alicloud -v  -sweep=${ALICLOUD_REGION} -sweep-run=${SWEEPER_CODE}
 echo -e "******** run sweeper test ${SWEEPER_CODE} end ********\n"
+fi
 
 
 #CURRENT_PATH=$(pwd)
