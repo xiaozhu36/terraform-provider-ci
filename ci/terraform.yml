@@ -4,73 +4,143 @@ resources:
   source:
     uri: https://github.com/xiaozhu36/terraform-provider-ci.git
 
-#shared:
-#  - &run-test-case
-#    task: test
-#    file: terraform-provider-src/ci/tasks/run-ci.yml
-#    params:
-#      ALICLOUD_ACCESS_KEY: {{alicloud_access_key}}
-#      ALICLOUD_SECRET_KEY: {{alicloud_secret_key}}
-#      ALICLOUD_REGION: {{alicloud_region}}
+groups:
+  - name: All
+    jobs:
+      # ECS
+      - Regions
+      - Zones
+      - Images
+      - Instance
+      - Disk
+      - SecurityGroup
+      - KeyPair
+#      - NetworkInterfaceZones
+#      # ESS
+#      - Ess
+#      # Container Service
+#      - CS
+#      # Function Compute
+#      - FC
+#      # OSS
+#      - Oss
+      - Sweeper
+
+  - name: Elastic Computing
+    jobs:
+      # ECS
+      - Regions
+      - Zones
+      - Images
+      - Instance
+      - Disk
+      - SecurityGroup
+      - KeyPair
+#      - NetworkInterfaceZones
+#      # ESS
+#      - Ess
+#      # Container Service
+#      - CS
+#      # Function Compute
+#      - FC
+  - name: Storage and CDN
+
+shared:
+  - &get-test-case
+    get: terraform-provider-ci
+    resource: terraform-provider-alicloud
+    trigger: true
+
+  - &run-test-case
+    task: test
+    file: terraform-provider-ci/ci/tasks/run-ci.yml
+
 
 jobs:
+- name: Regions
+  plan:
+  - <<: *get-test-case
+  - <<: *run-test-case
+    params:
+      ALICLOUD_ACCESS_KEY: {{alicloud_access_key}}
+      ALICLOUD_SECRET_KEY: {{alicloud_secret_key}}
+      ALICLOUD_REGION: {{alicloud_region}}
+      TEST_CASE_CODE: "Regions"
+
 - name: Zones
+  plan:
+  - <<: *get-test-case
+  - <<: *run-test-case
+    params:
+      ALICLOUD_ACCESS_KEY: {{alicloud_access_key}}
+      ALICLOUD_SECRET_KEY: {{alicloud_secret_key}}
+      ALICLOUD_REGION: {{alicloud_region}}
+      TEST_CASE_CODE: "Zones"
+
+- name: Images
+  plan:
+  - <<: *get-test-case
+  - <<: *run-test-case
+    params:
+      ALICLOUD_ACCESS_KEY: {{alicloud_access_key}}
+      ALICLOUD_SECRET_KEY: {{alicloud_secret_key}}
+      ALICLOUD_REGION: {{alicloud_region}}
+      TEST_CASE_CODE: "Images"
+
+- name: Instance
   plan:
   - get: terraform-provider-ci
     resource: terraform-provider-alicloud
-#    trigger: true
+    trigger: true
   - task: test
     file: terraform-provider-ci/ci/tasks/run-ci.yml
     params:
       ALICLOUD_ACCESS_KEY: {{alicloud_access_key}}
       ALICLOUD_SECRET_KEY: {{alicloud_secret_key}}
       ALICLOUD_REGION: {{alicloud_region}}
-      TEST_CASE_CODE: "ZonesDataSource_basic"
+      TEST_CASE_CODE: "Instance"
+      SWEEPER_CODE: "alicloud_instance"
 
-#- name: Images
-#  plan:
-#  - get: terraform-provider-alicloud
-#    resource: terraform-provider-alicloud
-#    trigger: true
-#  - task: test
-#    file: terraform-provider-alicloud/ci/tasks/run-ci.yml
-#    params:
-#      ALICLOUD_ACCESS_KEY: {{alicloud_access_key}}
-#      ALICLOUD_SECRET_KEY: {{alicloud_secret_key}}
-#      ALICLOUD_REGION: {{alicloud_region}}
-#      TEST_CASE_CODE: "ImagesDataSource_images"
-#
-#- name: Images2
-#  plan:
-#  - aggregate:
-#    - get: terraform-provider-alicloud
-#      resource: terraform-provider-alicloud
-#      trigger: true
-#  - task: test
-#    file: terraform-provider-alicloud/ci/tasks/run-ci.yml
-#    params:
-#      ALICLOUD_ACCESS_KEY: {{alicloud_access_key}}
-#      ALICLOUD_SECRET_KEY: {{alicloud_secret_key}}
-#      ALICLOUD_REGION: {{alicloud_region}}
-#      TEST_CASE_CODE: "ImagesDataSource_images"
-#
-#- name: Images3
-#  plan:
-#  - aggregate:
-#    - get: terraform-provider-alicloud
-#      resource: terraform-provider-alicloud
-#      trigger: true
-#  - task: test
-#    file: terraform-provider-alicloud/ci/tasks/run-ci.yml
-#    params:
-#      ALICLOUD_ACCESS_KEY: {{alicloud_access_key}}
-#      ALICLOUD_SECRET_KEY: {{alicloud_secret_key}}
-#      ALICLOUD_REGION: {{alicloud_region}}
-#      TEST_CASE_CODE: "ImagesDataSource_images"
 
-#- name: unit
-#  plan:
-#  - get: booklit
-#    trigger: true
-#  - task: test
-#    file: booklit/ci/test.yml
+- name: Disk
+  plan:
+  - get: terraform-provider-ci
+    resource: terraform-provider-alicloud
+    trigger: true
+  - task: test
+    file: terraform-provider-ci/ci/tasks/run-ci.yml
+    params:
+      ALICLOUD_ACCESS_KEY: {{alicloud_access_key}}
+      ALICLOUD_SECRET_KEY: {{alicloud_secret_key}}
+      ALICLOUD_REGION: {{alicloud_region}}
+      TEST_CASE_CODE: "Disk"
+      SWEEPER_CODE: "alicloud_disk"
+
+- name: SecurityGroup
+  plan:
+  - get: terraform-provider-ci
+    resource: terraform-provider-alicloud
+    trigger: true
+  - task: test
+    file: terraform-provider-ci/ci/tasks/run-ci.yml
+    params:
+      ALICLOUD_ACCESS_KEY: {{alicloud_access_key}}
+      ALICLOUD_SECRET_KEY: {{alicloud_secret_key}}
+      ALICLOUD_REGION: {{alicloud_region}}
+      TEST_CASE_CODE: "SecurityGroup"
+      SWEEPER_CODE: "alicloud_security_group"
+
+- name: KeyPair
+  plan:
+  - get: terraform-provider-ci
+    resource: terraform-provider-alicloud
+    trigger: true
+  - task: test
+    file: terraform-provider-ci/ci/tasks/run-ci.yml
+    params:
+      ALICLOUD_ACCESS_KEY: {{alicloud_access_key}}
+      ALICLOUD_SECRET_KEY: {{alicloud_secret_key}}
+      ALICLOUD_REGION: {{alicloud_region}}
+      TEST_CASE_CODE: "KeyPair"
+      SWEEPER_CODE: "alicloud_key_pair"
+

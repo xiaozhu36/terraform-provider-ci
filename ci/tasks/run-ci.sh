@@ -6,6 +6,7 @@ set -e
 : ${ALICLOUD_SECRET_KEY:?}
 : ${ALICLOUD_REGION:?}
 : ${TEST_CASE_CODE:?}
+: ${SWEEPER_CODE: ?}
 
 export ALICLOUD_ACCESS_KEY=${ALICLOUD_ACCESS_KEY}
 export ALICLOUD_SECRET_KEY=${ALICLOUD_SECRET_KEY}
@@ -25,13 +26,15 @@ cd terraform-provider-alicloud
 
 echo -e "******** run testcase start ********\n"
 
-TF_ACC=1 go test ./alicloud -v -run=TestAccAlicloudZonesDataSource_basic -timeout=120m
-
-echo -e $TEST_CASE_CODE
-
 TF_ACC=1 go test ./alicloud -v -run=TestAccAlicloud${TEST_CASE_CODE} -timeout=120m
 
 echo -e "******** run testcase end ********\n"
+
+if [[ ${SWEEPER_CODE} != "" ]]; then
+echo -e "******** run sweeper test ${SWEEPER_CODE} start ********\n"
+TF_ACC=1 go test ./alicloud -v  -sweep=${ALICLOUD_REGION} -sweep-run=${SWEEPER_CODE}
+echo -e "******** run sweeper test ${SWEEPER_CODE} end ********\n"
+
 
 #CURRENT_PATH=$(pwd)
 ##WORK_PATH=$CURRENT_PATH/${ENVIRONMENT_DIR}

@@ -26,3 +26,5 @@ params:
   ALICLOUD_SECRET_KEY: ""
   ALICLOUD_REGION: ""
   TEST_CASE_CODE: ""
+  SWEEPER_CODE: ""
+
